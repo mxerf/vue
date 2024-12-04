@@ -24,7 +24,7 @@ export default {
     categories() {
       return categories;
     },
-    colors() {
+    COLORS() {
       return Object.entries(COLORS).map(([name, code]) => ({
         name,
         code,
@@ -112,7 +112,7 @@ export default {
               <span class="colors__value"> Все </span>
             </label>
           </li>
-          <li class="colors__item" v-for="color in colors" :key="color.name">
+          <li class="colors__item" v-for="color in COLORS" :key="color.name">
             <label class="colors__label">
               <input
                 class="colors__radio sr-only"
