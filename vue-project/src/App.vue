@@ -1,68 +1,42 @@
 <script>
-import FilterComponent from "./components/FilterComponent/FilterComponent.vue";
-import products from "./data/products.js";
-import Catalog from "./modules/Catalog/Catalog.vue";
+import eventBus from "./eventBus";
+import MainPage from "./pages/MainPage.vue";
+import NotFoundPage from "./pages/NotFoundPage.vue";
+import ProductPage from "./pages/ProductPage.vue";
+
+const routes = {
+  main: MainPage,
+  product: ProductPage,
+  notFound: NotFoundPage,
+};
 
 export default {
   name: "App",
   components: {
-    Catalog,
-    FilterComponent,
+    MainPage,
+    NotFoundPage,
+    ProductPage,
   },
   data() {
     return {
-      filters: {
-        priceFrom: 0,
-        priceTo: 0,
-        categoryId: 0,
-        colorId: "all",
-      },
-      filteredProducts: [],
+      currentPage: "main",
+      currentPageParams: {},
     };
   },
   computed: {
-    productsCount() {
-      return this.filteredProducts.length;
-    },
-  },
-  methods: {
-    updateFilters(newFilters) {
-      this.filters = { ...this.filters, ...newFilters };
-      this.applyFilters();
-    },
-    applyFilters() {
-      this.filteredProducts = products.filter((product) => {
-        const priceMatch =
-          product.price >= this.filters.priceFrom &&
-          (this.filters.priceTo === 0 || product.price <= this.filters.priceTo);
-        const categoryMatch =
-          this.filters.categoryId === 0 ||
-          product.categoryId === this.filters.categoryId;
-        const colorMatch =
-          this.filters.colorId === "all" ||
-          product.colors.includes(this.filters.colorId);
-
-        return priceMatch && categoryMatch && colorMatch;
-      });
+    currentPageComponent() {
+      return routes[this.currentPage] || "NotFoundPage";
     },
   },
   created() {
-    this.filteredProducts = [...products];
+    eventBus.$on("navigate", (page, params) => {
+      this.currentPage = page;
+      this.currentPageParams = params || {};
+    });
   },
 };
 </script>
 
 <template>
-  <div id="app">
-    <main class="content container">
-      <div class="content__top content__top--catalog">
-        <h1 class="content__title">Каталог</h1>
-        <span class="content__info"> {{ productsCount }} товаров </span>
-      </div>
-      <div class="content__catalog">
-        <FilterComponent :filters="filters" @update:filters="updateFilters" />
-        <Catalog :products="filteredProducts" />
-      </div>
-    </main>
-  </div>
+  <component :is="currentPageComponent" :params="currentPageParams" />
 </template>

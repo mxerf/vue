@@ -29,6 +29,11 @@ export default {
       return this.products.length;
     },
   },
+  watch: {
+    products() {
+      this.currentPage = 1;
+    },
+  },
 };
 </script>
 <template>

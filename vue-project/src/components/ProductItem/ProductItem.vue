@@ -1,4 +1,5 @@
 <script>
+import navigate from "@/helpers/navigate";
 import ColorPickerComponent from "../ColorPickerComponent/ColorPickerComponent.vue";
 export default {
   components: {
@@ -10,11 +11,14 @@ export default {
       selectedColor: this.product.colors[0],
     };
   },
+  methods: {
+    navigate,
+  },
 };
 </script>
 
 <template>
-  <li class="catalog__item">
+  <li class="catalog__item" @click="navigate('product', { id: product.id })">
     <a class="catalog__pic" href="#">
       <img :src="product.image" :alt="product.title" />
     </a>

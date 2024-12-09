@@ -1,5 +1,6 @@
 const data = [
   {
+    id: 101010,
     title: "Радионяня Motorola MBP16",
     price: 3690,
     image: "img/radio.jpg",
@@ -7,6 +8,7 @@ const data = [
     colors: ["white", "blue", "green"],
   },
   {
+    id: 101011,
     title: "Ультразвуковая зубная щётка Playbrush Smart Sonic",
     price: 5660,
     image: "img/toothbrush.jpg",
@@ -14,6 +16,7 @@ const data = [
     colors: ["gray", "orange", "black"],
   },
   {
+    id: 101012,
     title: "Смартфон Xiaomi Mi Mix 3 6/128GB",
     price: 21790,
     image: "img/phone.jpg",
@@ -21,6 +24,7 @@ const data = [
     colors: ["black", "white", "blue"],
   },
   {
+    id: 101013,
     title: "Электроскейт Razor Cruiser",
     price: 24690,
     image: "img/board.jpg",
@@ -28,6 +32,7 @@ const data = [
     colors: ["yellow", "green", "orange"],
   },
   {
+    id: 101014,
     title: "Смартфон Xiaomi Mi A3 4/64GB Android One",
     price: 14960,
     image: "img/phone-2.jpg",
@@ -35,6 +40,7 @@ const data = [
     colors: ["black", "white", "gray"],
   },
   {
+    id: 101015,
     title: "Смартфон Xiaomi Redmi 6/128GB",
     price: 8960,
     image: "img/phone-3.jpg",
@@ -42,6 +48,7 @@ const data = [
     colors: ["blue", "green", "orange"],
   },
   {
+    id: 101016,
     title: "Электрический дрифт-карт Razor Crazy Cart",
     price: 39900,
     image: "img/bicycle.jpg",
@@ -49,6 +56,7 @@ const data = [
     colors: ["yellow", "black", "white"],
   },
   {
+    id: 101017,
     title: "Гироскутер Razor Hovertrax 2.0",
     price: 34900,
     image: "img/wheels.jpg",
@@ -56,6 +64,7 @@ const data = [
     colors: ["blue", "gray", "orange"],
   },
   {
+    id: 101018,
     title: "Детский трюковой самокат Razor Grom",
     price: 4990,
     image: "img/scooter.jpg",
@@ -63,6 +72,7 @@ const data = [
     colors: ["green", "black", "white"],
   },
   {
+    id: 101019,
     title: "Роллерсёрф Razor RipStik Air Pro",
     price: 6690,
     image: "img/ripstik.jpg",
@@ -70,6 +80,7 @@ const data = [
     colors: ["yellow", "blue", "green"],
   },
   {
+    id: 101020,
     title: "Наушники AirPods с беспроводным зарядным футляром",
     price: 16560,
     image: "img/airpods.jpg",
@@ -77,6 +88,7 @@ const data = [
     colors: ["white", "black", "gray"],
   },
   {
+    id: 101021,
     title: "Наушники Sony",
     price: 30690,
     image: "img/headphones.jpg",
