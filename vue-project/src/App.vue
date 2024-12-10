@@ -1,4 +1,6 @@
 <script>
+import FooterComponent from "./components/Footer/FooterComponent.vue";
+import HeaderComponent from "./components/Header/HeaderComponent.vue";
 import eventBus from "./eventBus";
 import MainPage from "./pages/MainPage.vue";
 import NotFoundPage from "./pages/NotFoundPage.vue";
@@ -16,6 +18,8 @@ export default {
     MainPage,
     NotFoundPage,
     ProductPage,
+    HeaderComponent,
+    FooterComponent,
   },
   data() {
     return {
@@ -38,5 +42,9 @@ export default {
 </script>
 
 <template>
-  <component :is="currentPageComponent" :params="currentPageParams" />
+  <div>
+    <HeaderComponent />
+    <router-view />
+    <FooterComponent />
+  </div>
 </template>

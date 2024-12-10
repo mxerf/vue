@@ -8,12 +8,6 @@ export default {
     Catalog,
     FilterComponent,
   },
-  props: {
-    params: {
-      type: Object,
-      required: true,
-    },
-  },
   data() {
     return {
       filters: {
@@ -38,11 +32,12 @@ export default {
     applyFilters() {
       this.filteredProducts = products.filter((product) => {
         const priceMatch =
-          product.price >= this.filters.priceFrom &&
-          (this.filters.priceTo === 0 || product.price <= this.filters.priceTo);
+          product.price >= +this.filters.priceFrom &&
+          (+this.filters.priceTo === 0 ||
+            product.price <= +this.filters.priceTo);
         const categoryMatch =
-          this.filters.categoryId === 0 ||
-          product.categoryId === this.filters.categoryId;
+          +this.filters.categoryId === 0 ||
+          product.categoryId === +this.filters.categoryId;
         const colorMatch =
           this.filters.colorId === "all" ||
           product.colors.includes(this.filters.colorId);
@@ -52,7 +47,7 @@ export default {
     },
   },
   created() {
-    this.filters = { ...this.filters, ...this.params };
+    this.filters = { ...this.filters, ...this.$route.query };
     this.applyFilters();
   },
 };

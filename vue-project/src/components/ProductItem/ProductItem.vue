@@ -1,5 +1,4 @@
 <script>
-import navigate from "@/helpers/navigate";
 import ColorPickerComponent from "../ColorPickerComponent/ColorPickerComponent.vue";
 export default {
   components: {
@@ -11,14 +10,16 @@ export default {
       selectedColor: this.product.colors[0],
     };
   },
-  methods: {
-    navigate,
-  },
+  methods: {},
 };
 </script>
 
 <template>
-  <li class="catalog__item" @click="navigate('product', { id: product.id })">
+  <router-link
+    tag="li"
+    class="catalog__item"
+    :to="{ name: 'product', params: { id: product.id } }"
+  >
     <a class="catalog__pic" href="#">
       <img :src="product.image" :alt="product.title" />
     </a>
@@ -35,6 +36,6 @@ export default {
       :colors="product.colors"
       @update:selectedColor="$emit('update:selectedColor', $event)"
     />
-  </li>
+  </router-link>
 </template>
 <style></style>

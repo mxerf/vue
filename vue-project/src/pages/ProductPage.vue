@@ -1,6 +1,7 @@
 <script>
 import categories from "@/data/categories";
 import products from "@/data/products";
+import { mapMutations } from "vuex";
 import ColorPickerComponent from "../components/ColorPickerComponent/ColorPickerComponent.vue";
 import navigate from "../helpers/navigate";
 import numberFormat from "../helpers/numberFormat";
@@ -10,18 +11,14 @@ export default {
   components: {
     ColorPickerComponent,
   },
-  props: {
-    params: {
-      type: Object,
-      required: true,
-    },
-  },
   data() {
-    return {};
+    return {
+      amount: 1,
+    };
   },
   computed: {
     product() {
-      return products.find((product) => product.id === this.params.id);
+      return products.find((product) => product.id === +this.$route.params.id);
     },
     category() {
       return categories.find(
@@ -33,7 +30,16 @@ export default {
     numberFormat,
   },
   methods: {
+    ...mapMutations({ addToCart: "addProductToCart" }),
     navigate,
+    increaseAmount() {
+      this.amount++;
+    },
+    decreaseAmount() {
+      if (this.amount > 1) {
+        this.amount--;
+      }
+    },
   },
 };
 </script>
@@ -43,22 +49,17 @@ export default {
     <div class="content__top">
       <ul class="breadcrumbs">
         <li class="breadcrumbs__item">
-          <a
-            class="breadcrumbs__link"
-            href="#"
-            @click.prevent="navigate('main')"
-          >
+          <router-link class="breadcrumbs__link" :to="{ name: 'main' }">
             Каталог
-          </a>
+          </router-link>
         </li>
         <li class="breadcrumbs__item">
-          <a
+          <router-link
             class="breadcrumbs__link"
-            href="#"
-            @click.prevent="navigate('main', { categoryId: category.id })"
+            :to="{ name: 'main', query: { categoryId: category.id } }"
           >
             {{ category.name }}
-          </a>
+          </router-link>
         </li>
         <li class="breadcrumbs__item">
           <a class="breadcrumbs__link"> {{ product.title }} </a>
@@ -82,66 +83,38 @@ export default {
         <span class="item__code">Артикул: {{ product.id }} </span>
         <h2 class="item__title">{{ product.title }}</h2>
         <div class="item__form">
-          <form class="form" action="#" method="POST">
-            <b class="item__price"> {{ product.price | numberFormat }} ₽ </b>
+          <form
+            class="form"
+            @submit.prevent="addToCart({ productId: product.id, amount })"
+          >
+            <b class="item__price">
+              {{ (product.price * amount) | numberFormat }} ₽
+            </b>
 
             <fieldset class="form__block">
               <legend class="form__legend">Цвет:</legend>
               <ColorPickerComponent :colors="product.colors" />
             </fieldset>
 
-            <!-- <fieldset class="form__block">
-              <legend class="form__legend">Объем в ГБ:</legend>
-
-              <ul class="sizes sizes--primery">
-                <li class="sizes__item">
-                  <label class="sizes__label">
-                    <input
-                      class="sizes__radio sr-only"
-                      type="radio"
-                      name="sizes-item"
-                      value="32"
-                    />
-                    <span class="sizes__value"> 32gb </span>
-                  </label>
-                </li>
-                <li class="sizes__item">
-                  <label class="sizes__label">
-                    <input
-                      class="sizes__radio sr-only"
-                      type="radio"
-                      name="sizes-item"
-                      value="64"
-                    />
-                    <span class="sizes__value"> 64gb </span>
-                  </label>
-                </li>
-                <li class="sizes__item">
-                  <label class="sizes__label">
-                    <input
-                      class="sizes__radio sr-only"
-                      type="radio"
-                      name="sizes-item"
-                      value="128"
-                      checked=""
-                    />
-                    <span class="sizes__value"> 128gb </span>
-                  </label>
-                </li>
-              </ul>
-            </fieldset> -->
-
             <div class="item__row">
               <div class="form__counter">
-                <button type="button" aria-label="Убрать один товар">
+                <button
+                  type="button"
+                  aria-label="Убрать один товар"
+                  @click="decreaseAmount"
+                >
                   <svg width="12" height="12" fill="currentColor">
                     <use xlink:href="#icon-minus"></use>
                   </svg>
                 </button>
 
-                <input type="text" value="1" name="count" />
+                <input type="text" v-model.number="amount" name="count" />
 
-                <button type="button" aria-label="Добавить один товар">
+                <button
+                  type="button"
+                  aria-label="Добавить один товар"
+                  @click="increaseAmount"
+                >
                   <svg width="12" height="12" fill="currentColor">
                     <use xlink:href="#icon-plus"></use>
                   </svg>

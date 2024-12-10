@@ -1,6 +1,7 @@
 <script>
 import categories from "@/data/categories.js";
 import COLORS from "@/data/colors.js";
+import objectEquals from "../../helpers/objectEquals";
 
 export default {
   name: "FilterComponent",
@@ -33,7 +34,10 @@ export default {
   },
   methods: {
     submitForm() {
-      this.$emit("update:filters", { ...this.currentFilters });
+      if (!objectEquals(this.currentFilters, this.filters)) {
+        this.$router.push({ query: { ...this.currentFilters } });
+        this.$emit("update:filters", { ...this.currentFilters });
+      }
     },
     resetForm() {
       this.currentFilters = {
@@ -42,6 +46,7 @@ export default {
         categoryId: 0,
         colorId: "all",
       };
+      this.$router.push({ query: { ...this.currentFilters } });
       this.$emit("update:filters", { ...this.currentFilters });
     },
   },
