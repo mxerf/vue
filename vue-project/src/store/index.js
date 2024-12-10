@@ -19,7 +19,8 @@ export default new Vuex.Store({
         state.cartProducts.push({ productId, amount });
       }
     },
-    deleteProductFromCart(state, productId) {
+    deleteProductFromCart(state, { productId }) {
+      console.log(productId, state.cartProducts);
       state.cartProducts = state.cartProducts.filter(
         (product) => product.productId !== productId
       );
