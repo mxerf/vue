@@ -35,7 +35,7 @@ export default {
           <use xlink:href="#icon-cart"></use>
         </svg>
         <span class="header__count" aria-label="Количество товаров">
-          {{ amount }}
+          {{ amount === null ? "загрузка..." : amount }}
         </span>
       </router-link>
     </div>

@@ -1,5 +1,3 @@
-
-
 export const alertMessage = (message) => {
-  alert(message)
-}
+  alert(message);
+};

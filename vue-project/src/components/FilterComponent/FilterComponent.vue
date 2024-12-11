@@ -1,6 +1,5 @@
 <script>
-import categories from "@/data/categories.js";
-import COLORS from "@/data/colors.js";
+import { get_categories_data, get_colors_data } from "../../api";
 import objectEquals from "../../helpers/objectEquals";
 
 export default {
@@ -19,17 +18,16 @@ export default {
         categoryId: this.filters.categoryId,
         colorId: this.filters.colorId,
       },
+      categoriesData: null,
+      colorsData: null,
     };
   },
   computed: {
     categories() {
-      return categories;
+      return this.categoriesData ? this.categoriesData.items : [];
     },
     COLORS() {
-      return Object.entries(COLORS).map(([name, code]) => ({
-        name,
-        code,
-      }));
+      return this.colorsData ? this.colorsData.items : [];
     },
   },
   methods: {
@@ -48,6 +46,36 @@ export default {
       };
       this.$router.push({ query: { ...this.currentFilters } });
       this.$emit("update:filters", { ...this.currentFilters });
+    },
+    getCategoriesData() {
+      return get_categories_data()
+        .then((data) => {
+          this.categoriesData = data;
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    },
+    getColorsData() {
+      return get_colors_data()
+        .then((data) => {
+          this.colorsData = data;
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    },
+  },
+  created() {
+    this.getCategoriesData();
+    this.getColorsData();
+  },
+  watch: {
+    $route() {
+      this.currentFilters = {
+        ...this.currentFilters,
+        ...this.$route.query,
+      };
     },
   },
 };
@@ -97,7 +125,7 @@ export default {
               :key="category.id"
               :value="category.id"
             >
-              {{ category.name }}
+              {{ category.title }}
             </option>
           </select>
         </label>
@@ -117,13 +145,13 @@ export default {
               <span class="colors__value"> Все </span>
             </label>
           </li>
-          <li class="colors__item" v-for="color in COLORS" :key="color.name">
+          <li class="colors__item" v-for="color in COLORS" :key="color.id">
             <label class="colors__label">
               <input
                 class="colors__radio sr-only"
                 type="radio"
                 v-model="currentFilters.colorId"
-                :value="color.name"
+                :value="color.id"
               />
               <span
                 class="colors__value"

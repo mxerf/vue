@@ -15,8 +15,8 @@ export default {
   },
   methods: {
     updateColor(color) {
-      this.selectedColor = color;
-      this.$emit("update:color", color);
+      this.selectedColor = color.id;
+      this.$emit("update:color", color.id);
     },
   },
   computed: {
@@ -28,19 +28,19 @@ export default {
 </script>
 <template>
   <ul class="colors colors--black">
-    <li v-for="color in colors" :key="color" class="colors__item">
+    <li v-for="color in colors" :key="color.id" class="colors__item">
       <label class="colors__label">
         <input
           class="colors__radio sr-only"
           type="radio"
           :value="color"
-          :checked="color === selectedColor"
+          :checked="color.id === selectedColor"
           @change="updateColor(color)"
         />
         <span
           class="colors__value"
           :style="{
-            backgroundColor: COLORS[color],
+            backgroundColor: color.code,
             border: color === 'white' ? '1px solid #eee' : '',
           }"
         >

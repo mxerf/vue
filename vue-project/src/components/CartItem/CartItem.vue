@@ -1,17 +1,57 @@
 <script>
 import numberFormat from "@/helpers/numberFormat";
-import { mapMutations } from "vuex";
+import { mapActions } from "vuex";
 export default {
   name: "CartItem",
   props: ["item"],
+  data() {
+    return {
+      isProductDeleteLoading: false,
+      isProductDeleteLoadingError: false,
+      isProductAmountUpdateLoading: false,
+      isProductAmountUpdateLoadingError: false,
+    };
+  },
   filters: {
     numberFormat,
   },
   methods: {
-    ...mapMutations({
-      updateAmount: "updateProductAmount",
-      deleteProduct: "deleteProductFromCart",
+    ...mapActions({
+      updateProductAmount: "updateProductAmount",
+      deleteProductFromCart: "deleteProductFromCart",
     }),
+    deleteProduct({ productId }) {
+      this.isProductDeleteLoading = true;
+      this.isProductDeleteLoadingError = false;
+      this.deleteProductFromCart({ productId })
+        .catch(() => {
+          this.isProductDeleteLoadingError = true;
+        })
+        .finally(() => {
+          this.isProductDeleteLoading = false;
+        });
+    },
+    updateAmount({ productId, amount }) {
+      this.isProductAmountUpdateLoading = true;
+      this.isProductAmountUpdateLoadingError = false;
+      if (amount < 1) {
+        this.deleteProduct({ productId })
+          .catch(() => {
+            this.isProductAmountUpdateLoadingError = true;
+          })
+          .finally(() => {
+            this.isProductAmountUpdateLoading = false;
+          });
+        return;
+      }
+      this.updateProductAmount({ productId, amount })
+        .catch(() => {
+          this.isProductAmountUpdateLoadingError = true;
+        })
+        .finally(() => {
+          this.isProductAmountUpdateLoading = false;
+        });
+    },
   },
   computed: {
     amount: {
@@ -39,7 +79,13 @@ export default {
     <h3 class="product__title">{{ item.product.title }}</h3>
     <span class="product__code"> Артикул: {{ item.product.id }} </span>
 
-    <div class="product__counter form__counter">
+    <div v-if="isProductAmountUpdateLoading">
+      <span class="loader" style="width: 32px; height: 32px"></span>
+    </div>
+    <div
+      class="product__counter form__counter"
+      v-if="!isProductAmountUpdateLoading"
+    >
       <button
         type="button"
         aria-label="Убрать один товар"
@@ -77,7 +123,17 @@ export default {
       aria-label="Удалить товар из корзины"
       @click="deleteProduct({ productId: item.product.id })"
     >
-      <svg width="20" height="20" fill="currentColor">
+      <span
+        class="loader"
+        style="width: 32px; height: 32px"
+        v-if="isProductDeleteLoading"
+      ></span>
+      <svg
+        width="20"
+        height="20"
+        fill="currentColor"
+        v-if="!isProductDeleteLoading"
+      >
         <use xlink:href="#icon-close"></use>
       </svg>
     </button>

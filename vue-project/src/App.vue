@@ -1,7 +1,6 @@
 <script>
 import FooterComponent from "./components/Footer/FooterComponent.vue";
 import HeaderComponent from "./components/Header/HeaderComponent.vue";
-import eventBus from "./eventBus";
 import MainPage from "./pages/MainPage.vue";
 import NotFoundPage from "./pages/NotFoundPage.vue";
 import ProductPage from "./pages/ProductPage.vue";
@@ -33,10 +32,7 @@ export default {
     },
   },
   created() {
-    eventBus.$on("navigate", (page, params) => {
-      this.currentPage = page;
-      this.currentPageParams = params || {};
-    });
+    this.$store.dispatch("getCart");
   },
 };
 </script>

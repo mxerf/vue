@@ -38,10 +38,24 @@ export default {
       </ul>
 
       <h1 class="content__title">Корзина</h1>
-      <span class="content__info"> {{ totalAmount }} товар(-ов) </span>
+      <span class="content__info">
+        {{
+          totalAmount === null ? "Загрузка..." : `${totalAmount} товар(-ов)`
+        }}</span
+      >
     </div>
-
-    <section class="cart">
+    <div
+      v-if="totalAmount === null"
+      style="
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100%;
+      "
+    >
+      <span class="loader"></span>
+    </div>
+    <section class="cart" v-else>
       <form class="cart__form form" action="#" method="POST">
         <div class="cart__field">
           <ul class="cart__list">

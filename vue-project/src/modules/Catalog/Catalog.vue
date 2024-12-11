@@ -18,6 +18,8 @@ export default {
     return {
       currentPage: 1,
       productsPerPage: 3,
+
+      productsData: null,
     };
   },
   computed: {
@@ -28,6 +30,9 @@ export default {
     productsCount() {
       return this.products.length;
     },
+  },
+  methods: {
+    getProductsData() {},
   },
   watch: {
     products() {
